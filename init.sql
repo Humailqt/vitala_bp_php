@@ -59,3 +59,26 @@ CREATE TABLE IF NOT EXISTS schedules (
   cron_expression VARCHAR(100) NOT NULL,
   enabled BOOLEAN DEFAULT 1
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS task_tables (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  task_id INT NOT NULL,
+  table_name VARCHAR(100) NOT NULL
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS devices (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  vendor VARCHAR(100) NOT NULL,
+  model VARCHAR(100) NOT NULL,
+  auth_template_id INT,
+  FOREIGN KEY (auth_template_id) REFERENCES auth_templates(id) ON DELETE SET NULL
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS subnets (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  subnet VARCHAR(50) NOT NULL,
+  credential_id INT,
+  scan_enabled BOOLEAN DEFAULT 1,
+  description TEXT,
+  FOREIGN KEY (credential_id) REFERENCES credentials(id) ON DELETE SET NULL
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
