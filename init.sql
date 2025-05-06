@@ -82,3 +82,20 @@ CREATE TABLE IF NOT EXISTS subnets (
   description TEXT,
   FOREIGN KEY (credential_id) REFERENCES credentials(id) ON DELETE SET NULL
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS task_assignments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  task_id INT NOT NULL,
+  node_id INT NOT NULL,
+  handler_id INT NOT NULL,
+  FOREIGN KEY (task_id) REFERENCES tasks(id),
+  FOREIGN KEY (node_id) REFERENCES nodes(id),
+  FOREIGN KEY (handler_id) REFERENCES handlers(id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+INSERT INTO handlers (task_id, name, description) VALUES
+(1, 'Backup Cisco SSH', 'Создаёт резервную копию конфигурации Cisco по SSH'),
+(1, 'Ping Sweep', 'Проверяет доступность узлов в подсети'),
+(1, 'SNMP Inventory', 'Собирает информацию по SNMP'),
+(1, 'Check Port Status', 'Проверяет статус портов на коммутаторе'),
+(1, 'Simple Echo Task', 'Тестовая задача, возвращает echo hostname');

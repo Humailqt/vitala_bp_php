@@ -3,11 +3,8 @@ session_start();
 require_once 'db.php';
 
 $add_for_task = $_GET['add_for_task'] ?? null;
-$table = $_GET['table'] ?? null;
+$table = $_GET['table'] ?? ($_POST['table'] ?? null);
 
-if (!$table || !preg_match('/^[a-zA-Z0-9_]+$/', $table)) {
-  die("Некорректное имя таблицы.");
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $columns = array_filter($_POST['columns'] ?? [], fn($c) => preg_match('/^[a-zA-Z0-9_]+$/', $c));
@@ -35,7 +32,10 @@ include 'templates/header.php';
 <h4>⚙️ Добавить новую таблицу: <code><?= htmlspecialchars($table) ?></code></h4>
 
 <form method="post">
-  <input type="hidden" name="table" value="<?= htmlspecialchars($table) ?>">
+  <div class="mb-3">
+    <label class="form-label">Имя таблицы *</label>
+    <input type="text" name="table" class="form-control" required pattern="[a-zA-Z0-9_]+" placeholder="out_backup_cisco">
+  </div>
 
   <div id="column-list">
     <div class="input-group mb-2">
